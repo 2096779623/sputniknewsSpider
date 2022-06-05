@@ -1,16 +1,38 @@
-from urllib import request#从urllib导入request模块(获取网页源码)
-from bs4 import BeautifulSoup#从bs4导入BeautifulSoup模块(提取数据)
-import re#导入re模块(正则表达式)
-url = "https://sputniknews.cn/russia/"#设置url变量
-info = request.urlopen(url).read().decode('utf-8')#获取网页源码并以UTF-8解析
-soup = BeautifulSoup(info, "html.parser")#使用BeautifulSoup解析网页源码
-data = soup.find_all("a", class_="list__title")#查找a标签中带有指定class标签的源码
-data2 = str(data)#转换为字符串类型
-con = re.findall(r'<a.*? title="(.*?)".*?>.*?</a>', data2, re.S|re.M)#使用正则表达式过滤title
-data3 = str(con)#转换为字符串类型
-r = '[’!"#&\'()*,/;<=>?@[\\]{|}]'#设置表达式变量
-con1 = re.sub(r, '\n', data3)#使用正则表达式过滤标点符号并替换成换行符
-print(con1)#输出结果
+# -*- encoding: utf-8 -*-
+'''
+@File    :   ru.py
+@Time    :   2022/06/05 13:45:57
+@Author  :   2096779623 
+@Contact :   admin@utermux.dev
+@License :   MIT
+'''
+
+from urllib import request
+from bs4 import BeautifulSoup
+url = "https://sputniknews.cn/russia/"
+info = request.urlopen(url).read().decode('utf-8')
+soup = BeautifulSoup(info, "html.parser")
+
+def text():
+  data = soup.find_all("a", class_="list__title")
+  data2 = str(data)
+  con = re.findall(r'<a.*? title="(.*?)".*?>.*?</a>', data2, re.S|re.M)
+  data3 = str(con)
+  r = '[’!"#&\'()*,/;<=>?@[\\]{|}]'
+  text = re.sub(r, '\n', data3)
+  text = str(text)
+  print(text)
+def link():
+  for link in soup.find_all('a', class_="list__title"):
+    link = link.get('href')
+    link = str(link)
+    link = re.sub('(.*.html)',r'https://sputniknews.cn\1',link)
+    print(link)
+
+if __name__ == '__main__':
+  text()
+  link()
+  
 '''
 
                        _oo0oo_
